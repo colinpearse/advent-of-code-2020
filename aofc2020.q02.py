@@ -32,7 +32,7 @@ def check_pws02b(file):
     return check_pws(iarr, checkpw_b)
 
 test02a = ["1-3 a: abcde", "1-3 b: cdefg", "2-9 c: ccccccccc" ] # a) must be 1 to 3 'a's in string, b) char positions 1 OR 3 must equal the letter
-advent02a_file = "advent02a.txt"
+advent02a_file = "aofc2020.02a.txt"
 
 print (check_pws(test02a, checkpw_a))   # 2
 print (check_pws02a(advent02a_file))    # 458

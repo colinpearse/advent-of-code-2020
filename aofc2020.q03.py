@@ -42,7 +42,7 @@ test03a = [
 "#.##...#...",
 "#...##....#",
 ".#..#...#.#"]
-advent03a_file = "advent03a.txt"
+advent03a_file = "aofc2020.03a.txt"
 advent03b_addrcs = [(1,1),(1,3),(1,5),(1,7),(2,1)]  # use this + file from a
 
 print (count_trees(test03a, 1, 3))      # 7

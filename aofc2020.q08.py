@@ -50,7 +50,7 @@ acc -99
 acc +1
 jmp -4
 acc +6'''.splitlines()
-advent08a_file = "advent08a.txt"
+advent08a_file = "aofc2020.08a.txt"
 
 print (runinf(code_eg))            # 5
 print (isinf08a(advent08a_file))   # 2080

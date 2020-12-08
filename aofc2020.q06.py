@@ -60,7 +60,7 @@ a
 
 b'''
     
-advent06a_file = "advent06a.txt"
+advent06a_file = "aofc2020.06a.txt"
 
 print (count_answers(answers_eg))        # 11
 print (answer_count06a(advent06a_file))  # 6170

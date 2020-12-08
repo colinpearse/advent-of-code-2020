@@ -87,7 +87,7 @@ dark yellow bags contain 2 dark green bags.
 dark green bags contain 2 dark blue bags.
 dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags.'''.splitlines()
-advent07a_file = "advent07a.txt"
+advent07a_file = "aofc2020.07a.txt"
 
 print (colour_bags(bags_eg))             # 4
 print (colour_bags07a(advent07a_file))   # 337

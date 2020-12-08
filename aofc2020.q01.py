@@ -37,10 +37,9 @@ def expenses01b(file):
     return find_expenses_n3(iarr)
 
 test01a=[1721, 979, 366, 299, 675, 1456]  # a)1721*299 = 514579, b) 979*366*675 = 241861950
-advent01a_file = "advent01a.txt"
-advent01b_file = "advent01a.txt" # same
+advent01a_file = "aofc2020.01a.txt"
 
-print ("eg1 =", find_expenses_n2(test01a))    # 514579
-print ("01a =", expenses01a(advent01a_file))  # 1019904
-print ("eg2 =", find_expenses_n3(test01a))    # 241861950
-print ("01b =", expenses01b(advent01b_file))  # 176647680
+print (find_expenses_n2(test01a))    # 514579
+print (expenses01a(advent01a_file))  # 1019904
+print (find_expenses_n3(test01a))    # 241861950
+print (expenses01b(advent01a_file))  # 176647680

@@ -43,7 +43,7 @@ def find_my_seat05b(file):
 ticket_eg1 = "BFFFBBFRRR"  # row 70, column 7, seat ID 567
 ticket_eg2 = "FFFBBBFRRR"  # row 14, column 7, seat ID 119
 ticket_eg3 = "BBFFBBFRLL"  # row 102, column 4, seat ID 820
-advent05a_file = "advent05a.txt"
+advent05a_file = "aofc2020.05a.txt"
 
 print (ticket_info(ticket_eg1))          # 70, 7, 567
 print (ticket_info(ticket_eg2))          # 14, 7, 119
