@@ -4,14 +4,11 @@
 
 import os, re
 
-# NOTE get the set of all bags in case the inner bags don't appear as an outer one
 # {'light red': {'bright white': 1, 'muted yellow': 2}, ..., 'dotted black': {}}
 def make_bmap(lines):
-    abags = set()
     bmap = {}
     for line in lines:
         bag,s = re.split(r' bags contain ', line)
-        abags.add(bag)
         ibags = s.split(',')
         ibmap = {}
         for ibag in ibags:
@@ -20,9 +17,8 @@ def make_bmap(lines):
                 num = int(a[1])
                 ibag = a[2]
                 ibmap[ibag] = num
-                abags.add(ibag)
             bmap[bag] = ibmap
-    return abags, bmap
+    return bmap
 
 def bags_dfs_colour(bmap, sbag, ebag):
     q = [sbag]
@@ -35,7 +31,7 @@ def bags_dfs_colour(bmap, sbag, ebag):
     return False
 
 def colour_bags(lines):
-    abags, bmap = make_bmap(lines)
+    bmap = make_bmap(lines)
     count = 0
     for bag in bmap.keys():
         if bags_dfs_colour(bmap, bag, 'shiny gold'):
@@ -44,7 +40,7 @@ def colour_bags(lines):
 
 # OLD: very inefficient
 def colour_bags_b_inefficient(lines):
-    abags, bmap = make_bmap(lines)
+    bmap = make_bmap(lines)
     count = 0
     q = ['shiny gold']
     while q:
@@ -57,7 +53,7 @@ def colour_bags_b_inefficient(lines):
 
 # better
 def colour_bags_b(lines):
-    abags, bmap = make_bmap(lines)
+    bmap = make_bmap(lines)
     count = 0
     q = [('shiny gold',1)]
     mult = [0]
