@@ -13,6 +13,7 @@
 9) preamble sum check
 10) adapter array
 11) seen seats
+12) move ship
 
 *Note: these python3 scripts don't have execute permissions and are run using `python <script>` or `python3 <script>`*
 
