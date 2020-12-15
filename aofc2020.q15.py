@@ -5,6 +5,8 @@
 import os
 
 # not elegant or quick but hey ho
+# elegance: seen a very neat and tidy solution using dict[n]=list and sum on dict[n][-1]-dict[n][-2] (though big space complexity)
+# speed:    have since found out the sequence is mathematically unpredictable - lookup: Van Eck Sequence
 
 def say_numbers(start, stop, debug=False):
     def setmap(m, n, i):
