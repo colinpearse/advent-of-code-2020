@@ -4,11 +4,16 @@
 
 # NOTE: the 3x3 examples given don't match the same x,y, they are offset, because they are only showing active cubes
 
-# REFACTOR: stopped refactoring for multiple dimensions because check_neighbours(check,actives,dim=4)
-#           ran too slowly. I tried using operator and numpy and it didn't improve the speed:
-#           neighbour = tuple(map(operator.add, check, coords))
-#           neighbour = tuple(numpy.add(check, coords))
-#           Will have to revisit...
+# REFACTOR:
+# - stuck with (1) because the others didn't prove significantly faster:
+#   1. nc = tuple(map(sum, zip(active, coords)))
+#   2. nc = tuple(map(operator.add, check, coords))
+#   3. nc = tuple(numpy.add(check, coords))
+#
+# - originally I used nested for loops <dim> dimensions deep, which was slow.
+#   Other solutions cycled through the active cubes incrementing the surrounding cubes "minesweeper" style,
+#   which meant only having to search for counts equalling 3 and 2 to activate/deactive those particular cubes.
+#   This was far more efficient, so I am using this now.
 
 import os, itertools
 
@@ -21,76 +26,33 @@ def init_actives(cube, dim=3):
                 actives.add((x,ylen-(y+1))+(0,)*(dim-2))  # reverse y to make the top of the square the higher number
     return actives
 
-# return: [[-2,-1,0,1], [0,1,2,3], ... ] corresponding to x,y,...etc needing to be checked
-def extend_limits(actives, dim=3):
-    minmax = [[1,-1]]*dim   # [[1, -1], [1, -1], [1, -1], [1, -1], ...]
+# count neighbours of each active cube "minesweeper" style,
+# and then look for counts of 3 (active) and 2 (active if active already)
+def count_neighbours(actives,dim=3):
+    neighbours = {}
     for active in actives:
-        for i in range(len(active)):
-            vdim = active[i]   # vdim will have x,y,z,w,... etc values
-            cmin,cmax = minmax[i][0],minmax[i][1]
-            minmax[i][0],minmax[i][1] = min(vdim,cmin),max(vdim,cmax)
-    return [list(range(minmax[i][0]-1,minmax[i][1]+2)) for i in range(len(minmax))]
+        for coords in itertools.product(range(-1, 2),repeat=dim):
+            if coords != (0,)*dim:
+                nc = tuple(map(sum, zip(active, coords)))
+                if nc not in neighbours:
+                    neighbours[nc] = 0
+                neighbours[nc] += 1
+    return neighbours
 
-# check_neighbours(..., dim=4) is SLOW compared to check_neighbours_4d()
-def check_neighbours(check,actives,dim=3):
-    neighbours = set()
-    for coords in itertools.product(range(-1, 2),repeat=dim):
-        if coords != (0,)*dim:
-            neighbours.add(tuple(map(sum, zip(check, coords))))
-    return len(neighbours & actives)
-
-def check_neighbours_4d(check,actives,dim=4):
-    x,y,z,w = check
-    acount = 0
-    for xp in [-1,0,1]:
-        for yp in [-1,0,1]:
-            for zp in [-1,0,1]:
-                for wp in [-1,0,1]:
-                    if (xp,yp,zp,wp) != (0,0,0,0) and (x+xp,y+yp,z+zp,w+wp) in actives:
-                        acount += 1
-    return acount
-    
-def cycle_cube(cube, ncycles):
-    actives = init_actives(cube)
+def cycle_cube(cube, ncycles, dim=3):
+    actives = init_actives(cube, dim=dim)
     for n in range(ncycles):
-        xs,ys,zs = extend_limits(actives)
         new_actives = set()
-        for x in xs:
-            for y in ys:
-                for z in zs:
-                    acount = check_neighbours((x,y,z),actives,dim=3)
-                    if (x,y,z) in actives:
-                        if acount == 2 or acount == 3:
-                            new_actives.add((x,y,z))
-                    else:
-                        if acount == 3:
-                            new_actives.add((x,y,z))
-        actives = new_actives
-    return len(actives)
-
-def cycle_cube_4d(cube, ncycles):
-    actives = init_actives(cube, dim=4)
-    for n in range(ncycles):
-        xs,ys,zs,ws = extend_limits(actives, dim=4)
-        new_actives = set()
-        for x in xs:
-            for y in ys:
-                for z in zs:
-                    for w in ws:
-                        acount = check_neighbours_4d((x,y,z,w),actives,dim=4)
-                        if (x,y,z,w) in actives:
-                            if acount == 2 or acount == 3:
-                                new_actives.add((x,y,z,w))
-                        else:
-                            if acount == 3:
-                                new_actives.add((x,y,z,w))
+        for nb,c in count_neighbours(actives,dim=dim).items():
+            if c == 3 or (nb in actives and c == 2):
+                new_actives.add(nb)
         actives = new_actives
     return len(actives)
 
 def cycle_cube17a(cube, ncycles):
     return cycle_cube(cube, ncycles)
 def cycle_cube17b(cube, ncycles):
-    return cycle_cube_4d(cube, ncycles)
+    return cycle_cube(cube, ncycles, dim=4)
 
 cube_eg = '''.#.
 ..#
@@ -105,7 +67,7 @@ advent17a = '''.##..#.#
 ...#..##
 ###..##.'''.splitlines()
 
-print (cycle_cube(cube_eg, 6))       # 112
-print (cycle_cube17a(advent17a, 6))  # 359
-print (cycle_cube_4d(cube_eg, 6))    # 848
-print (cycle_cube17b(advent17a, 6))  # 2228
+print (cycle_cube(cube_eg, 6))        # 112
+print (cycle_cube17a(advent17a, 6))   # 359
+print (cycle_cube(cube_eg, 6, dim=4)) # 848
+print (cycle_cube17b(advent17a, 6))   # 2228
