@@ -18,6 +18,7 @@
 14) mask mem
 15) say numbers
 16) tickets
+17) infinite cube
 
 *Note: these python3 scripts don't have execute permissions and are run using `python <script>` or `python3 <script>`*
 
