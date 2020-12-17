@@ -33,13 +33,12 @@ def extend_limits(actives, dim=3):
 
 # check_neighbours(..., dim=4) is SLOW compared to check_neighbours_4d()
 def check_neighbours(check,actives,dim=3):
-    acount = 0
+    neighbours = set()
     for coords in itertools.product(range(-1, 2),repeat=dim):
         if coords != (0,)*dim:
-            neighbour = tuple(map(sum, zip(check, coords)))
-            if neighbour in actives:
-                acount += 1
-    return acount
+            neighbours.add(tuple(map(sum, zip(check, coords))))
+    return len(neighbours & actives)
+
 def check_neighbours_4d(check,actives,dim=4):
     x,y,z,w = check
     acount = 0
