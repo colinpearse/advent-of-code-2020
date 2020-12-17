@@ -6,7 +6,7 @@
 
 import os
 
-def get_actives(cube, dim=3):
+def init_actives(cube, dim=3):
     actives = set()
     ylen,xlen = len(cube),len(cube[0])
     for y in range(ylen):
@@ -50,7 +50,7 @@ def check_neighbours_4d(x,y,z,w,actives):
     return acount
     
 def cycle_cube(cube, ncycles):
-    actives = get_actives(cube)
+    actives = init_actives(cube)
     for n in range(ncycles):
         xs,ys,zs = extend_limits(actives)
         new_actives = set()
@@ -68,7 +68,7 @@ def cycle_cube(cube, ncycles):
     return len(actives)
 
 def cycle_cube_4d(cube, ncycles):
-    actives = get_actives(cube, dim=4)
+    actives = init_actives(cube, dim=4)
     for n in range(ncycles):
         xs,ys,zs,ws = extend_limits(actives, dim=4)
         new_actives = set()
