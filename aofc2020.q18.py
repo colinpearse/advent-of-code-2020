@@ -31,7 +31,7 @@ def calc(s):
     return calcflat(stack.pop())
 
 # + takes precedence over other ops
-# treat '+' like parentheses, open:check '+' ahead close:check recent stack(s)
+# treat '+' like parentheses; open:check '+' ahead, close:check recent stack(s)
 def calc_b(s):
     arr = re.sub(r'(\*|\+|\-|\d+|\(|\))', r'\1:', s.replace(' ','')).rstrip(':').split(':')
     alen = len(arr)
